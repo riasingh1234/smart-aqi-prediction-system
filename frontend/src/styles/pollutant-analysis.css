@@ -1,0 +1,76 @@
+@import "./shared-cards.css";
+
+.pollutant-card {
+  padding: 20px 22px;
+}
+
+.dominant-block {
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(94, 234, 212, 0.06);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 16px;
+}
+
+.dominant-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-tertiary);
+  margin: 0 0 4px;
+}
+
+.dominant-value {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--signal-cyan);
+  margin: 0 0 6px;
+}
+
+.dominant-reason {
+  font-size: 0.8rem;
+  color: var(--ink-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 52px 1fr 70px;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar-name {
+  font-size: 0.76rem;
+  color: var(--ink-secondary);
+}
+
+.bar-track {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.8s cubic-bezier(0.34, 1.4, 0.4, 1);
+}
+
+.bar-value {
+  font-size: 0.74rem;
+  text-align: right;
+  color: var(--ink-secondary);
+}
+
+.bar-unit {
+  color: var(--ink-tertiary);
+}

@@ -1,0 +1,110 @@
+:root {
+  /* ---- Color: "instrument at dusk" — deep atmosphere fading to smog-teal,
+     with a clean-air cyan signal color cutting through it. AQI category
+     colors are kept exactly to the CPCB scale requested in the brief. ---- */
+  --bg-deep: #070b14;
+  --bg-mid: #0b1526;
+  --bg-teal: #0d2b34;
+  --glass-fill: rgba(255, 255, 255, 0.055);
+  --glass-fill-strong: rgba(255, 255, 255, 0.09);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-hover: rgba(94, 234, 212, 0.35);
+
+  --signal-cyan: #5eead4;
+  --signal-cyan-dim: rgba(94, 234, 212, 0.16);
+  --ink-primary: #eef3f7;
+  --ink-secondary: #a9b7c6;
+  --ink-tertiary: #6d7d8f;
+
+  --aqi-good: #2ecc71;
+  --aqi-satisfactory: #d9d94f;
+  --aqi-moderate: #e6a83c;
+  --aqi-poor: #e5583f;
+  --aqi-verypoor: #a24fd6;
+  --aqi-severe: #7a1030;
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink-primary);
+  background: radial-gradient(ellipse 120% 80% at 15% -10%, #14324a 0%, transparent 55%),
+    radial-gradient(ellipse 100% 70% at 100% 0%, #0d2b34 0%, transparent 50%),
+    linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 55%, #081a1f 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--signal-cyan-dim);
+  color: var(--signal-cyan);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+}
+
+.glass {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: var(--shadow-glass);
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass:hover {
+  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.42);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+a {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

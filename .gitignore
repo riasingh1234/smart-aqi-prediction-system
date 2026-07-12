@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Env
+.env
+.env.local
+
+# OS
+.DS_Store
+
+# Data artifacts (regenerate via data/generate_data.py + notebooks/train_model.py)
+# Keep model.pkl / scaler.pkl tracked so the backend runs out of the box —
+# comment the two lines below back in if you'd rather regenerate them fresh.
+# backend/model.pkl
+# backend/scaler.pkl

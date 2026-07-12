@@ -1,0 +1,29 @@
+@import "./shared-cards.css";
+
+.trend-card {
+  padding: 20px 22px;
+}
+
+.trend-hint {
+  font-size: 0.7rem;
+  color: var(--ink-tertiary);
+}
+
+.trend-tooltip {
+  background: rgba(11, 21, 38, 0.92);
+  border: 1px solid var(--glass-border-hover);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.trend-tooltip p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+}
+
+.trend-tooltip-value {
+  color: var(--signal-cyan) !important;
+  font-weight: 600;
+  margin-top: 2px !important;
+}

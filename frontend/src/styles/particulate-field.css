@@ -1,0 +1,35 @@
+.particulate-field {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  top: 105%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(94, 234, 212, 0.55) 0%, rgba(94, 234, 212, 0) 70%);
+  animation-name: drift-up;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes drift-up {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.55;
+  }
+  92% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translate(var(--drift), -115vh);
+    opacity: 0;
+  }
+}
