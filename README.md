@@ -1,179 +1,311 @@
-# AeroIndex — Smart Air Quality Forecast & Health Advisory System
+# 🌍 Smart AQI Prediction System
 
-A full-stack machine learning web application that predicts the Air Quality Index (AQI)
-from pollutant and weather readings, classifies the pollution level, explains which
-pollutant is driving the score, and gives category-specific health advice — wrapped in a
-glassmorphism dashboard.
+An end-to-end Machine Learning web application that predicts the **Air Quality Index (AQI)** using environmental and weather parameters and provides **health recommendations** based on the predicted air quality.
 
-**Live demo:** _add your deployed URL here after following the Deployment section_
+The project uses **Gradient Boosting Regressor** for AQI prediction and is built with a **React + Vite frontend** and a **Flask backend**, deployed using **Vercel** and **Render**.
 
 ---
 
-## Overview
+## 🚀 Live Demo
 
-| Layer | Tech |
-|---|---|
-| Frontend | React 18 + Vite, Recharts, Axios |
-| Backend | Flask + Flask-CORS |
-| ML | scikit-learn (Random Forest / Gradient Boosting) + optional XGBoost, Joblib |
-| Data | Synthetic dataset generated from CPCB AQI sub-index breakpoints (`data/generate_data.py`) |
+### 🌐 Frontend (Vercel)
 
-## Architecture
+smart-aqi-prediction-system.vercel.app
 
-```
-Browser (React dashboard)
-      │  POST /predict  { temperature, humidity, wind_speed, pm25, pm10, no2, so2, co, o3 }
-      ▼
-Flask API (backend/app.py)
-      │  scaler.transform → model.predict
-      ▼
-Trained model.pkl (Random Forest, chosen automatically by R² during training)
-      │
-      ▼
-JSON response: { AQI, category, risk_level, color, health_advice,
-                 main_pollutant, main_pollutant_reason, pollutant_breakdown }
-```
+### ⚙️ Backend API (Render)
 
-## Project Structure
+https://smart-aqi-prediction-system.onrender.com
 
-```
-Smart-AQI-System/
-├── frontend/           React + Vite dashboard
-│   └── src/
-│       ├── components/ AQIGauge, InputForm, KPICards, HealthCard,
-│       │               PollutantAnalysis, TrendGraph, WeatherSummary,
-│       │               Navbar, ParticulateField
-│       └── styles/      per-component CSS + design tokens
-├── backend/             Flask API + trained model.pkl / scaler.pkl
-├── notebooks/           train_model.py (EDA + model comparison + training)
-├── data/                generate_data.py + aqi_dataset.csv
-├── outputs/              EDA plots, feature importance chart
-├── requirements.txt
-└── README.md
-```
+###  Health Check
 
-## Getting Started
+https://smart-aqi-prediction-system.onrender.com/health
 
-### 1. Backend
+---
 
-```bash
-cd backend
-python -m venv venv && source venv/bin/activate   # optional but recommended
-pip install -r requirements.txt
-python app.py
-```
+# 📸 Screenshots
 
-The API starts on `http://localhost:5000`.
+### Home Page
 
-- `GET /` → health check message
-- `GET /health` → `{status, model}`
-- `GET /metadata` → training metrics + feature importance
-- `POST /predict` → AQI prediction (see payload below)
+<img src="screenshots/home.png" width="800">
 
-### 2. Frontend
+### Prediction Result
 
-```bash
-cd frontend
-npm install
-cp .env.example .env      # points the app at localhost:5000 by default
-npm run dev
-```
+<img src="screenshots/prediction.png" width="800">
 
-Open `http://localhost:5173`. If the backend isn't running, the dashboard
-automatically falls back to a client-side heuristic estimate so the UI stays
-fully interactive (useful for demoing without a server).
+---
 
-### 3. (Optional) Retrain the model
+# ✨ Features
 
-```bash
-cd data && python generate_data.py       # regenerate the synthetic dataset
-cd ../notebooks && python train_model.py  # retrain, compares RF / GB / XGBoost, saves the best
-```
+- 🌍 Predict Air Quality Index (AQI)
+- 🤖 Machine Learning based prediction
+- 📊 Uses real environmental parameters
+- 💚 Health recommendations based on AQI
+- 📈 Feature Importance Visualization
+- 📱 Responsive UI
+- ⚡ Fast Flask REST API
+- ☁️ Cloud deployment using Render & Vercel
 
-This overwrites `backend/model.pkl`, `backend/scaler.pkl`, and
-`backend/model_metadata.json`, and refreshes the plots in `outputs/`.
+---
 
-## API Reference
+# 🧠 Machine Learning
 
-**POST `/predict`**
+The model is trained using multiple regression algorithms:
 
-Request body:
+- Random Forest Regressor
+- Gradient Boosting Regressor ✅ (Best Model)
+- XGBoost Regressor (Evaluation)
 
-```json
-{
-  "temperature": 27, "humidity": 55, "wind_speed": 8,
-  "pm25": 65, "pm10": 110, "no2": 32, "so2": 12, "co": 1.1, "o3": 38
-}
-```
+The best-performing model is automatically selected based on **R² Score**.
 
-Response:
+### Input Features
 
-```json
-{
-  "AQI": 176.4,
-  "category": "Poor",
-  "risk_level": "High",
-  "color": "#e74c3c",
-  "health_advice": ["Wear an N95 mask outdoors.", "Avoid outdoor workouts."],
-  "main_pollutant": "PM2.5",
-  "main_pollutant_reason": "Fine particulate matter small enough to penetrate deep into the lungs...",
-  "pollutant_breakdown": { "PM2.5": {"value": 65, "unit": "µg/m³"}, "...": "..." },
-  "model_used": "RandomForest"
-}
-```
+- Temperature
+- Humidity
+- Wind Speed
+- PM2.5
+- PM10
+- NO₂
+- SO₂
+- CO
+- O₃
 
-## AQI Classification
+### Output
 
-| Range | Category | Color |
-|---|---|---|
-| 0–50 | Good | Green |
-| 51–100 | Satisfactory | Yellow |
-| 101–200 | Moderate | Orange |
-| 201–300 | Poor | Red |
-| 301–400 | Very Poor | Purple |
-| 401–500 | Severe | Maroon |
+- Predicted AQI
+- AQI Category
+- Health Recommendation
+- Dominant Pollutant Information
 
-## Model Performance
+---
 
-Trained on 6,000 synthetic samples generated from CPCB sub-index breakpoints
-(see `data/generate_data.py`), 80/20 train-test split:
+# 🛠️ Tech Stack
 
-| Model | MAE | RMSE | R² |
-|---|---|---|---|
-| **Random Forest (selected)** | ~3.9 | ~5.5 | ~0.997 |
-| Gradient Boosting | ~4.3 | ~5.9 | ~0.997 |
-| XGBoost | ~4.8 | ~8.0 | ~0.994 |
+## Frontend
 
-PM2.5 is consistently the dominant feature by importance, matching real-world
-AQI behavior in most urban environments.
+- React
+- Vite
+- Axios
+- CSS
 
-> Note: this dataset is synthetic. Swap `data/aqi_dataset.csv` for a real
-> CPCB/OpenAQ export and rerun `train_model.py` to retrain on real data — no
-> other code changes required, since the feature schema stays identical.
+## Backend
+
+- Flask
+- Flask-CORS
+- Scikit-learn
+- Pandas
+- NumPy
+- Joblib
+
+## Machine Learning
+
+- Gradient Boosting Regressor
+- Random Forest Regressor
+- XGBoost (Model Comparison)
+- StandardScaler
 
 ## Deployment
 
-**Backend → Render**
-1. Push this repo to GitHub.
-2. New Web Service on Render → point at `backend/`.
-3. Build command: `pip install -r requirements.txt`
-4. Start command: `gunicorn app:app`
+- Vercel (Frontend)
+- Render (Backend)
 
-**Frontend → Vercel**
-1. Import the repo, set root directory to `frontend/`.
-2. Add environment variable `VITE_API_URL` = your Render backend URL.
-3. Deploy.
+---
 
-## Future Improvements
+# 📂 Project Structure
 
-- Replace manual input with live OpenWeather / OpenAQ / WAQI API integration
-  (the input schema already matches what those APIs return).
-- City search + map-based pollution visualization.
-- Prediction history stored per user.
-- SHAP-based explainable AI for per-prediction feature attribution.
-- Downloadable PDF prediction report.
-- 7-day AQI forecast (currently the trend graph shows simulated history).
+```
+Smart-AQI-System/
+│
+├── backend/
+│   ├── app.py
+│   ├── model.pkl
+│   ├── scaler.pkl
+│   ├── model_metadata.json
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.js
+│
+├── data/
+│   └── aqi_dataset.csv
+│
+├── notebooks/
+│   └── train_model.py
+│
+├── outputs/
+│   ├── eda_overview.png
+│   └── feature_importance.png
+│
+└── README.md
+```
 
-## License
+---
 
-MIT — free to use for academic, portfolio, or resume purposes.
+# 📊 Model Performance
+
+| Model | MAE | RMSE | R² Score |
+|------|------:|------:|------:|
+| Random Forest | 4.1016 | 5.9651 | 0.9968 |
+| **Gradient Boosting** ✅ | **4.2946** | **5.8854** | **0.9968** |
+| XGBoost | 4.7720 | 7.9857 | 0.9942 |
+
+### Feature Importance
+
+| Feature | Importance |
+|---------|-----------:|
+| PM2.5 | 0.9465 |
+| PM10 | 0.0372 |
+| O₃ | 0.0150 |
+| CO | 0.0007 |
+| NO₂ | 0.0002 |
+| Wind Speed | 0.0001 |
+| Humidity | 0.0001 |
+| Temperature | 0.0001 |
+| SO₂ | 0.0000 |
+
+---
+
+# 🔌 API Endpoints
+
+## Base URL
+
+```
+https://smart-aqi-prediction-system.onrender.com
+```
+
+---
+
+### Predict AQI
+
+```
+POST /predict
+```
+
+Sample Request
+
+```json
+{
+  "temperature": 30,
+  "humidity": 60,
+  "wind_speed": 5,
+  "pm25": 80,
+  "pm10": 120,
+  "no2": 40,
+  "so2": 20,
+  "co": 0.8,
+  "o3": 50
+}
+```
+
+---
+
+### Get Model Metadata
+
+```
+GET /metadata
+```
+
+---
+
+### Health Check
+
+```
+GET /health
+```
+
+---
+
+# ⚙️ Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/riasingh1234/smart-aqi-prediction-system.git
+cd smart-aqi-prediction-system
+```
+
+---
+
+## Backend Setup
+
+```bash
+cd backend
+
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# macOS/Linux
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+python app.py
+```
+
+---
+
+## Frontend Setup
+
+```bash
+cd frontend
+
+npm install
+
+npm run dev
+```
+
+---
+
+## Train the Model
+
+```bash
+cd notebooks
+
+python train_model.py
+```
+
+This generates:
+
+- model.pkl
+- scaler.pkl
+- model_metadata.json
+
+---
+
+# 📈 Future Improvements
+
+- Live AQI data integration using public APIs
+- AQI forecasting for future dates
+- Interactive map visualization
+- User authentication
+- Historical AQI trends
+- Email/SMS health alerts
+- Mobile application
+
+---
+
+# 👩‍💻 Author
+
+**Ria Singh**
+
+GitHub: https://github.com/riasingh1234
+
+# ⭐ Support
+
+If you found this project helpful:
+
+⭐ Star this repository
+
+🍴 Fork it
+
+💡 Contribute improvements
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
