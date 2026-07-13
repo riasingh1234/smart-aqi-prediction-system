@@ -26,11 +26,11 @@ https://smart-aqi-prediction-system.onrender.com/health
 
 ### Home Page
 
-<img src="screenshots/home.png" width="800">
+<img src="home.png" width="800">
 
 ### Prediction Result
 
-<img src="screenshots/prediction.png" width="800">
+<img src="prediction.png" width="800">
 
 ---
 
